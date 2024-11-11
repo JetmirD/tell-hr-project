@@ -59,6 +59,10 @@
   }
 }
 
+.shadow-sm{
+  width: 25REM !important;
+  height: 25REM !important;
+}
 @layer base {
   * {
     @apply border-border;

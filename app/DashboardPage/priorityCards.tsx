@@ -2,12 +2,16 @@
 import { Card } from "@tremor/react";
 import { createClient } from '@/utils/supabase/server';
 import React, { use, useEffect, useState } from "react";
-
-
-    const filterBySentiment = (employees: any, sentiment: any) => {
-        return employees.filter((employee: any) => employee.sentiment === sentiment);
-    }
-    function MyAreaChart({ employees }: any) {
+import styles from './DashboardPage.module.css';
+import { Button } from "@/components/ui/button";
+import { areaChartComponent } from "@/components/forms/areaChart";
+import { lineChart } from "@/components/forms/lineChart";
+import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
+import { pieChart } from "@/components/forms/pieChart";
+const filterBySentiment = (employees: any, sentiment: any) => {
+    return employees.filter((employee: any) => employee.sentiment === sentiment);
+}
+function MyAreaChart({ employees }: any) {
 
 
 
@@ -16,70 +20,70 @@ import React, { use, useEffect, useState } from "react";
     const negativeEmployees = filterBySentiment(employees, "Negative");
     const neutralEmployees = filterBySentiment(employees, "Neutral");
     return (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-            <div style={{ ...cardStyle, backgroundColor: '#ff7675' }}>
-                <b><h1>Positive Sentiment</h1></b>
-                <ul style={listStyle}>
-                    {positiveEmployees.map((employee: any) => (
-                        <li key={employee.id} style={listItemStyle}>
-                            <span style={{ fontWeight: 'bold' }}>{employee.EmployeeName}</span>
-                            <span style={{ marginLeft: '0.5rem', color: '#ff7675' }}>
-                                ({employee.sentiment_score})
-                            </span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div style={{ ...cardStyle, backgroundColor: '#ffeaa7' }}>
-                <b><h1>Neutral Sentiment</h1></b>
-                <ul style={listStyle}>
-                    {neutralEmployees.map((employee: any) => (
-                        <li key={employee.id} style={listItemStyle}>
-                            <span style={{ fontWeight: 'bold' }}>{employee.EmployeeName}</span>
-                            <span style={{ marginLeft: '0.5rem', color: '#00b894' }}>
-                                ({employee.sentiment_score})
-                            </span>
+        <main style={{ gap: '1rem' }}>
+            <div className={styles.priorityCards}>
+                <div className={`${styles.card}`} style={{ backgroundColor: '#ff7675' }}>
+                    <b><h1 style={{ color: 'black' }}>Positive Sentiment</h1></b>
+                    <ul className={styles.list}>
+                        {positiveEmployees.map((employee: any) => (
+                            <li key={employee.id} className={styles.listItem}>
+                                <span style={{ fontWeight: 'bold', color: 'black' }}>{employee.EmployeeName}</span>
+                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                    ({employee.sentiment_score})
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className={`${styles.card}`} style={{ backgroundColor: '#ffeaa7' }}>
+                    <b><h1 style={{ color: 'black' }}>Neutral Sentiment</h1></b>
+                    <ul className={styles.list}>
+                        {neutralEmployees.map((employee: any) => (
+                            <li key={employee.id} className={styles.listItem}>
+                                <span style={{ color: 'black', fontWeight: 'bold' }}>{employee.EmployeeName}</span>
+                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                    ({employee.sentiment_score})
+                                </span>
 
-                        </li>
-                    ))}
-                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className={`${styles.card}`} style={{ backgroundColor: '#55efc4' }}>
+                    <b> <h1 style={{ color: 'black' }}>Negative Sentiment</h1></b>
+                    <ul className={styles.list}>
+                        {negativeEmployees.map((employee: any) => (
+                            <li key={employee.id} className={styles.listItem}>
+                                <span style={{ fontWeight: 'bold', color: 'black' }}>{employee.EmployeeName}</span>
+                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                    ({employee.sentiment_score})
+                                </span>
+                            </li>))}
+                    </ul>
+                </div>
             </div>
-            <div style={{ ...cardStyle, backgroundColor: '#55efc4' }}>
-                <b> <h1>Negative Sentiment</h1></b>
-                <ul style={listStyle}>
-                    {negativeEmployees.map((employee: any) => (
-                        <li key={employee.id} style={listItemStyle}>
-                            <span style={{ fontWeight: 'bold' }}>{employee.EmployeeName}</span>
-                            <span style={{ marginLeft: '0.5rem', color: '#00b894' }}>
-                                ({employee.sentiment_score})
-                            </span>
-                        </li>))}
-                </ul>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className={styles.AreaChart}>
+                    {lineChart()}
+                </div>
+                <div className={styles.AreaChart}>
+                    {pieChart()}
+                </div>
             </div>
 
 
-        </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className={styles.AreaChart}>
+                    {horizontalBarChart()}
+                </div>
+                <div className={styles.AreaChart}>
+                    {areaChartComponent()}
+                </div>
+            </div>
+
+        </main>
     );
 }
-const cardStyle = {
-    border: 'NONE',
-    borderRadius: '8px',
-    padding: '2rem',
-    width: '268px',
-    // textAlign: 'center',
-};
-const listStyle = {
-    listStyleType: 'none',
-    padding: 0,
-    margin: '1rem 0 0',
-};
-
-const listItemStyle = {
-    padding: '0.5rem 1rem',
-    marginBottom: '0.5rem',
-    borderRadius: '4px',
-    backgroundColor: '#fff',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-};
 
 export default MyAreaChart;

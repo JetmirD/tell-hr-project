@@ -1,0 +1,32 @@
+.AreaChart{
+    margin-top: 5%;
+}
+
+/* DashboardPage.module.css */
+
+.card {
+    border: none;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 268px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.listItem {
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.priorityCards{
+    display: flex;
+    justify-content: space-between;
+    gap:inherit
+}
