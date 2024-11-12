@@ -1,5 +1,4 @@
 "use client";
-import { Card } from "@tremor/react";
 import { createClient } from '@/utils/supabase/server';
 import React, { use, useEffect, useState } from "react";
 import styles from './DashboardPage.module.css';
