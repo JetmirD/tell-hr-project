@@ -8,18 +8,25 @@ import { lineChart } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import { pieChart } from "@/components/forms/pieChart";
 
-const filterBySentiment = (employees, sentiment) => {
+const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
 }
 
-function MyAreaChart({ employees }) {
+interface Employee {
+    id: string;
+    EmployeeName: string;
+    sentiment: string;
+    sentiment_score: number;
+}
+
+function MyAreaChart({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: any) => {
         setSearchTerm(e.target.value.toLowerCase());
     };
 
-    const filterEmployeesByName = (employees) => {
+    const filterEmployeesByName = (employees: any[]) => {
         return employees.filter(employee =>
             employee.EmployeeName.toLowerCase().includes(searchTerm)
         );
