@@ -80,6 +80,19 @@
     margin-bottom: 10%;
 }
 
+/* Centered card styling when only one card is displayed */
+.centeredCard {
+    justify-content: center;
+}
+
+/* Separate container for charts */
+.chartsContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .priorityCards {
@@ -90,5 +103,10 @@
     .card {
         width: 90%;
         margin-bottom: 1rem;
+    }
+
+    .chartsContainer {
+        flex-direction: column;
+        align-items: center;
     }
 }

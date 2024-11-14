@@ -1,34 +1,40 @@
 "use client";
 import { createClient } from '@/utils/supabase/server';
-import React, { use, useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
 import { Button } from "@/components/ui/button";
 import { areaChartComponent } from "@/components/forms/areaChart";
 import { lineChart } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import { pieChart } from "@/components/forms/pieChart";
-const filterBySentiment = (employees: any, sentiment: any) => {
-    return employees.filter((employee: any) => employee.sentiment === sentiment);
+
+const filterBySentiment = (employees, sentiment) => {
+    return employees.filter(employee => employee.sentiment === sentiment);
 }
-function MyAreaChart({ employees }: any) {
+
+function MyAreaChart({ employees }) {
     const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e) => {
         setSearchTerm(e.target.value.toLowerCase());
     };
-    const filterEmployeesByName = (employees: any) => {
-        return employees.filter((employee: { EmployeeName: string; }) =>
+
+    const filterEmployeesByName = (employees) => {
+        return employees.filter(employee =>
             employee.EmployeeName.toLowerCase().includes(searchTerm)
         );
     };
+
     const positiveEmployees = filterEmployeesByName(filterBySentiment(employees, "Positive"));
-    console.log("positive", positiveEmployees);
     const negativeEmployees = filterEmployeesByName(filterBySentiment(employees, "Negative"));
     const neutralEmployees = filterEmployeesByName(filterBySentiment(employees, "Neutral"));
 
     const showPositive = positiveEmployees.length > 0;
     const showNeutral = neutralEmployees.length > 0;
     const showNegative = negativeEmployees.length > 0;
+
+    const visibleCardsCount = [showPositive, showNeutral, showNegative].filter(Boolean).length;
+
     return (
         <main style={{ gap: '1rem' }}>
             {/* Search input */}
@@ -41,17 +47,17 @@ function MyAreaChart({ employees }: any) {
                     className={styles.searchInput}
                 />
             </div>
-            <div className={styles.priorityCards}>
+            
+            {/* Cards Section */}
+            <div className={`${styles.priorityCards} ${visibleCardsCount === 1 ? styles.centeredCard : ''}`}>
                 {showPositive && (
                     <div className={`${styles.card} ${styles.positive}`}>
-                        <b><h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Positive Sentiment</h1></b>
+                        <h1>Positive Sentiment</h1>
                         <ul className={styles.list}>
-                            {positiveEmployees.map((employee: any) => (
+                            {positiveEmployees.map((employee) => (
                                 <li key={employee.id} className={styles.listItem}>
-                                    <span style={{ fontWeight: '500', color: 'black' }}>{employee.EmployeeName}</span>
-                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                        ({employee.sentiment_score})
-                                    </span>
+                                    <span>{employee.EmployeeName}</span>
+                                    <span>({employee.sentiment_score})</span>
                                 </li>
                             ))}
                         </ul>
@@ -59,38 +65,34 @@ function MyAreaChart({ employees }: any) {
                 )}
                 {showNeutral && (
                     <div className={`${styles.card} ${styles.neutral}`}>
-                        <b><h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Neutral Sentiment</h1></b>
+                        <h1>Neutral Sentiment</h1>
                         <ul className={styles.list}>
-                            {neutralEmployees.map((employee: any) => (
+                            {neutralEmployees.map((employee) => (
                                 <li key={employee.id} className={styles.listItem}>
-                                    <span style={{ color: 'black', fontWeight: '500' }}>{employee.EmployeeName}</span>
-                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                        ({employee.sentiment_score})
-                                    </span>
-
+                                    <span>{employee.EmployeeName}</span>
+                                    <span>({employee.sentiment_score})</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
-
                 {showNegative && (
                     <div className={`${styles.card} ${styles.negative}`}>
-                        <h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Negative Sentiment</h1>
+                        <h1>Negative Sentiment</h1>
                         <ul className={styles.list}>
-                            {negativeEmployees.map((employee: any) => (
+                            {negativeEmployees.map((employee) => (
                                 <li key={employee.id} className={styles.listItem}>
-                                    <span style={{ fontWeight: '500', color: 'black' }}>{employee.EmployeeName}</span>
-                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                        ({employee.sentiment_score})
-                                    </span>
-                                </li>))}
+                                    <span>{employee.EmployeeName}</span>
+                                    <span>({employee.sentiment_score})</span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 )}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {/* Charts Section */}
+            <div className={styles.chartsContainer}>
                 <div className={styles.AreaChart}>
                     {lineChart()}
                 </div>
@@ -99,8 +101,7 @@ function MyAreaChart({ employees }: any) {
                 </div>
             </div>
 
-
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className={styles.chartsContainer}>
                 <div className={styles.AreaChart}>
                     {horizontalBarChart()}
                 </div>
@@ -108,12 +109,8 @@ function MyAreaChart({ employees }: any) {
                     {areaChartComponent()}
                 </div>
             </div>
-
         </main>
-
     );
-
 }
-
 
 export default MyAreaChart;
