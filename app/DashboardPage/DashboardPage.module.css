@@ -1,16 +1,59 @@
-.AreaChart{
-    margin-top: 5%;
+/* Styling for the search box */
+.searchBox {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
 }
 
-/* DashboardPage.module.css */
+.searchInput {
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 320px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
 
+.searchInput:focus {
+    border-color: #888;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Card styling */
 .card {
     border: none;
-    border-radius: 8px;
-    padding: 2rem;
-    width: 268px;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 280px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Background colors for each sentiment */
+.card.positive {
+    background-color: #A34054;
+    color: #2d3436;
+}
+
+.card.neutral {
+    background-color: #FDA481;
+    color: #2d3436;
+}
+
+.card.negative {
+    background-color: #0C969C;
+    color: #2d3436;
+}
+
+/* Styling for lists within cards */
 .list {
     list-style-type: none;
     padding: 0;
@@ -18,15 +61,34 @@
 }
 
 .listItem {
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    background-color: #fff;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.priorityCards{
     display: flex;
     justify-content: space-between;
-    gap:inherit
+    align-items: center;
+}
+
+/* Flex container for the cards */
+.priorityCards {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 10%;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .priorityCards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        margin-bottom: 1rem;
+    }
 }

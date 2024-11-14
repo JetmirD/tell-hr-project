@@ -11,55 +11,83 @@ const filterBySentiment = (employees: any, sentiment: any) => {
     return employees.filter((employee: any) => employee.sentiment === sentiment);
 }
 function MyAreaChart({ employees }: any) {
+    const [searchTerm, setSearchTerm] = useState("");
 
-
-
-    const positiveEmployees = filterBySentiment(employees, "Positive");
+    const handleSearch = (e: any) => {
+        setSearchTerm(e.target.value.toLowerCase());
+    };
+    const filterEmployeesByName = (employees: any) => {
+        return employees.filter((employee: { EmployeeName: string; }) =>
+            employee.EmployeeName.toLowerCase().includes(searchTerm)
+        );
+    };
+    const positiveEmployees = filterEmployeesByName(filterBySentiment(employees, "Positive"));
     console.log("positive", positiveEmployees);
-    const negativeEmployees = filterBySentiment(employees, "Negative");
-    const neutralEmployees = filterBySentiment(employees, "Neutral");
+    const negativeEmployees = filterEmployeesByName(filterBySentiment(employees, "Negative"));
+    const neutralEmployees = filterEmployeesByName(filterBySentiment(employees, "Neutral"));
+
+    const showPositive = positiveEmployees.length > 0;
+    const showNeutral = neutralEmployees.length > 0;
+    const showNegative = negativeEmployees.length > 0;
     return (
         <main style={{ gap: '1rem' }}>
+            {/* Search input */}
+            <div className={styles.searchBox}>
+                <input
+                    type="text"
+                    placeholder="Search employee name..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className={styles.searchInput}
+                />
+            </div>
             <div className={styles.priorityCards}>
-                <div className={`${styles.card}`} style={{ backgroundColor: '#ff7675' }}>
-                    <b><h1 style={{ color: 'black' }}>Positive Sentiment</h1></b>
-                    <ul className={styles.list}>
-                        {positiveEmployees.map((employee: any) => (
-                            <li key={employee.id} className={styles.listItem}>
-                                <span style={{ fontWeight: 'bold', color: 'black' }}>{employee.EmployeeName}</span>
-                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                    ({employee.sentiment_score})
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className={`${styles.card}`} style={{ backgroundColor: '#ffeaa7' }}>
-                    <b><h1 style={{ color: 'black' }}>Neutral Sentiment</h1></b>
-                    <ul className={styles.list}>
-                        {neutralEmployees.map((employee: any) => (
-                            <li key={employee.id} className={styles.listItem}>
-                                <span style={{ color: 'black', fontWeight: 'bold' }}>{employee.EmployeeName}</span>
-                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                    ({employee.sentiment_score})
-                                </span>
+                {showPositive && (
+                    <div className={`${styles.card} ${styles.positive}`}>
+                        <b><h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Positive Sentiment</h1></b>
+                        <ul className={styles.list}>
+                            {positiveEmployees.map((employee: any) => (
+                                <li key={employee.id} className={styles.listItem}>
+                                    <span style={{ fontWeight: '500', color: 'black' }}>{employee.EmployeeName}</span>
+                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                        ({employee.sentiment_score})
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                {showNeutral && (
+                    <div className={`${styles.card} ${styles.neutral}`}>
+                        <b><h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Neutral Sentiment</h1></b>
+                        <ul className={styles.list}>
+                            {neutralEmployees.map((employee: any) => (
+                                <li key={employee.id} className={styles.listItem}>
+                                    <span style={{ color: 'black', fontWeight: '500' }}>{employee.EmployeeName}</span>
+                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                        ({employee.sentiment_score})
+                                    </span>
 
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className={`${styles.card}`} style={{ backgroundColor: '#55efc4' }}>
-                    <b> <h1 style={{ color: 'black' }}>Negative Sentiment</h1></b>
-                    <ul className={styles.list}>
-                        {negativeEmployees.map((employee: any) => (
-                            <li key={employee.id} className={styles.listItem}>
-                                <span style={{ fontWeight: 'bold', color: 'black' }}>{employee.EmployeeName}</span>
-                                <span style={{ marginLeft: '0.5rem', color: 'black' }}>
-                                    ({employee.sentiment_score})
-                                </span>
-                            </li>))}
-                    </ul>
-                </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {showNegative && (
+                    <div className={`${styles.card} ${styles.negative}`}>
+                        <h1 style={{ color: 'white', fontSize: '21px', fontWeight: '500', borderBottom: '0.1px dashed white', textShadow: 'rgb(0 0 0 / 90%) 2px 2px 4px' }}>Negative Sentiment</h1>
+                        <ul className={styles.list}>
+                            {negativeEmployees.map((employee: any) => (
+                                <li key={employee.id} className={styles.listItem}>
+                                    <span style={{ fontWeight: '500', color: 'black' }}>{employee.EmployeeName}</span>
+                                    <span style={{ marginLeft: '0.5rem', color: 'black' }}>
+                                        ({employee.sentiment_score})
+                                    </span>
+                                </li>))}
+                        </ul>
+                    </div>
+                )}
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -82,7 +110,10 @@ function MyAreaChart({ employees }: any) {
             </div>
 
         </main>
+
     );
+
 }
+
 
 export default MyAreaChart;
