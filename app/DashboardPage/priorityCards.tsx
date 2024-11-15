@@ -1,46 +1,45 @@
 "use client";
-import { createClient } from '@/utils/supabase/server';
 import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
-import { Button } from "@/components/ui/button";
 import { areaChartComponent } from "@/components/forms/areaChart";
 import { lineChart } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import { pieChart } from "@/components/forms/pieChart";
 
-const filterBySentiment = (employees: any[], sentiment: string) => {
-    return employees.filter(employee => employee.sentiment === sentiment);
+interface Employee {
+    id?: string; 
+    firstName: string;
+    lastName: string;
+    riskScore: number;
+    riskLevel: string;
 }
 
-interface Employee {
-    id: string;
-    EmployeeName: string;
-    sentiment: string;
-    sentiment_score: number;
-}
+const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
+    return employees.filter(employee => employee.riskLevel === riskLevel);
+};
 
 function MyAreaChart({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSearch = (e: any) => {
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value.toLowerCase());
     };
 
-    const filterEmployeesByName = (employees: any[]) => {
+    const filterEmployeesByName = (employees: Employee[]) => {
         return employees.filter(employee =>
-            employee.EmployeeName.toLowerCase().includes(searchTerm)
+            `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchTerm)
         );
     };
 
-    const positiveEmployees = filterEmployeesByName(filterBySentiment(employees, "Positive"));
-    const negativeEmployees = filterEmployeesByName(filterBySentiment(employees, "Negative"));
-    const neutralEmployees = filterEmployeesByName(filterBySentiment(employees, "Neutral"));
+    const lowRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "low"));
+    const mediumRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "medium"));
+    const highRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "high"));
 
-    const showPositive = positiveEmployees.length > 0;
-    const showNeutral = neutralEmployees.length > 0;
-    const showNegative = negativeEmployees.length > 0;
+    const showLowRisk = lowRiskEmployees.length > 0;
+    const showMediumRisk = mediumRiskEmployees.length > 0;
+    const showHighRisk = highRiskEmployees.length > 0;
 
-    const visibleCardsCount = [showPositive, showNeutral, showNegative].filter(Boolean).length;
+    const visibleCardsCount = [showLowRisk, showMediumRisk, showHighRisk].filter(Boolean).length;
 
     return (
         <main style={{ gap: '1rem' }}>
@@ -57,40 +56,49 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
             
             {/* Cards Section */}
             <div className={`${styles.priorityCards} ${visibleCardsCount === 1 ? styles.centeredCard : ''}`}>
-                {showPositive && (
-                    <div className={`${styles.card} ${styles.positive}`}>
-                        <h1>Positive Sentiment</h1>
+                {showLowRisk && (
+                    <div className={`${styles.card} ${styles.lowRisk}`}>
+                        <h1>Low Risk</h1>
                         <ul className={styles.list}>
-                            {positiveEmployees.map((employee) => (
-                                <li key={employee.id} className={styles.listItem}>
-                                    <span>{employee.EmployeeName}</span>
-                                    <span>({employee.sentiment_score})</span>
+                            {lowRiskEmployees.map((employee, index) => (
+                                <li 
+                                    key={employee.id || `${employee.firstName}-${employee.lastName}-low-${index}`} 
+                                    className={styles.listItem}
+                                >
+                                    <span>{`${employee.firstName} ${employee.lastName}`}</span>
+                                    <span>({employee.riskScore})</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
-                {showNeutral && (
-                    <div className={`${styles.card} ${styles.neutral}`}>
-                        <h1>Neutral Sentiment</h1>
+                {showMediumRisk && (
+                    <div className={`${styles.card} ${styles.mediumRisk}`}>
+                        <h1>Medium Risk</h1>
                         <ul className={styles.list}>
-                            {neutralEmployees.map((employee) => (
-                                <li key={employee.id} className={styles.listItem}>
-                                    <span>{employee.EmployeeName}</span>
-                                    <span>({employee.sentiment_score})</span>
+                            {mediumRiskEmployees.map((employee, index) => (
+                                <li 
+                                    key={employee.id || `${employee.firstName}-${employee.lastName}-medium-${index}`} 
+                                    className={styles.listItem}
+                                >
+                                    <span>{`${employee.firstName} ${employee.lastName}`}</span>
+                                    <span>({employee.riskScore})</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
-                {showNegative && (
-                    <div className={`${styles.card} ${styles.negative}`}>
-                        <h1>Negative Sentiment</h1>
+                {showHighRisk && (
+                    <div className={`${styles.card} ${styles.highRisk}`}>
+                        <h1>High Risk</h1>
                         <ul className={styles.list}>
-                            {negativeEmployees.map((employee) => (
-                                <li key={employee.id} className={styles.listItem}>
-                                    <span>{employee.EmployeeName}</span>
-                                    <span>({employee.sentiment_score})</span>
+                            {highRiskEmployees.map((employee, index) => (
+                                <li 
+                                    key={employee.id || `${employee.firstName}-${employee.lastName}-high-${index}`} 
+                                    className={styles.listItem}
+                                >
+                                    <span>{`${employee.firstName} ${employee.lastName}`}</span>
+                                    <span>({employee.riskScore})</span>
                                 </li>
                             ))}
                         </ul>

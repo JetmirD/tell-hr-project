@@ -37,19 +37,19 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Background colors for each sentiment */
-.card.positive {
-    background-color: #A34054;
+/* Background colors for each risk level */
+.card.lowRisk {
+    background-color:#0C969C; 
     color: #2d3436;
 }
 
-.card.neutral {
+.card.mediumRisk {
     background-color: #FDA481;
     color: #2d3436;
 }
 
-.card.negative {
-    background-color: #0C969C;
+.card.highRisk {
+    background-color: #A34054; 
     color: #2d3436;
 }
 
