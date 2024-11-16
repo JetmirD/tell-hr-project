@@ -16,6 +16,11 @@ interface Employee {
     lastName: string;
     riskScore: number;
     riskLevel: string;
+    salary_response?: string;
+    manager_response?: string;
+    benefits_response?: string;
+    career_response?: string;
+    environment_response?: string;
 }
 
 const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
@@ -24,9 +29,20 @@ const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
 
 function MyAreaChart({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+    const [answerIndex, setAnswerIndex] = useState<number>(0); // Index for navigating answers
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value.toLowerCase());
+    };
+
+    const handleEmployeeClick = (employee: Employee) => {
+        setSelectedEmployee(employee);
+        setAnswerIndex(0);
+    };
+
+    const closePopup = () => {
+        setSelectedEmployee(null);
     };
 
     const filterEmployeesByName = (employees: Employee[]) => {
@@ -44,6 +60,22 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
     const showHighRisk = highRiskEmployees.length > 0;
 
     const visibleCardsCount = [showLowRisk, showMediumRisk, showHighRisk].filter(Boolean).length;
+
+    const responses = [
+        { label: "Salary Response", value: selectedEmployee?.salary_response },
+        { label: "Manager Response", value: selectedEmployee?.manager_response },
+        { label: "Benefits Response", value: selectedEmployee?.benefits_response },
+        { label: "Career Response", value: selectedEmployee?.career_response },
+        { label: "Environment Response", value: selectedEmployee?.environment_response }
+    ];
+
+    const nextAnswer = () => {
+        setAnswerIndex((prevIndex) => (prevIndex + 1) % responses.length);
+    };
+
+    const prevAnswer = () => {
+        setAnswerIndex((prevIndex) => (prevIndex - 1 + responses.length) % responses.length);
+    };
 
     return (
         <main style={{ gap: '1rem' }}>
@@ -196,6 +228,40 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                     </div>
                 )}
             </div>
+
+            {/* Popup Section */}
+            {selectedEmployee && (
+                <div className={styles.popup} onClick={closePopup}>
+                    <div 
+                        className={styles.popupContent} 
+                        onClick={(e) => e.stopPropagation()} // Prevent popup from closing when clicking inside
+                    >
+                        <button onClick={closePopup} className={styles.closeButton}>
+                            ✖ Close
+                        </button>
+                        <h2>{`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}</h2>
+                        <div>
+                            <strong>{responses[answerIndex].label}:</strong> 
+                            {responses[answerIndex].value || "N/A"}
+                        </div>
+
+                        {/* Display current answer position */}
+                        <div className={styles.answerPosition}>
+                            {answerIndex + 1} / {responses.length}
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        <div className={styles.navigationButtons}>
+                            <button onClick={prevAnswer} className={styles.navButton}>
+                                ← Previous
+                            </button>
+                            <button onClick={nextAnswer} className={styles.navButton}>
+                                Next → 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Charts Section */}
             <div className={styles.chartsContainer}>
