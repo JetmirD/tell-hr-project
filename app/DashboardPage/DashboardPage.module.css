@@ -156,20 +156,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Backdrop */
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
 
 .popupContent {
-    background: white;
+    background-color: white;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     position: relative;
-    max-width: 400px;
+    max-width: 600px;
     width: 100%;
+    max-height: 80%;
+    overflow-y: auto;
 }
 
 .closeButton {
@@ -178,30 +179,23 @@
     right: 10px;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
-}
-
-
-.answerPosition {
-    margin-top: 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
 }
 
 .navigationButtons {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: 20px;
 }
 
 .navButton {
-    background-color: #007bff;
+    padding: 5px 15px;
+    background-color: #007BFF;
     color: white;
     border: none;
-    padding: 8px 16px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .navButton:hover {

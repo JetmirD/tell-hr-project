@@ -90,14 +90,11 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                 />
             </div>
 
-
-
             {/* Cards Section */}
             <div className={`${styles.priorityCards} ${visibleCardsCount === 1 ? styles.centeredCard : ''}`}>
                 {showLowRisk && (
                     <div className={`${styles.card} ${styles.positive}`} style={{ position: 'relative', padding: '20px' }}>
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Low Risk</h1>
-
                         <div style={{
                             position: 'absolute',
                             left: 0,
@@ -116,33 +113,37 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                             <p style={{ margin: 0 }}>Name</p>
                             <p style={{ margin: 0 }}>Score</p>
                         </div>
-
                         <div
                             style={{ marginTop: '40px', maxHeight: '110px', overflowY: 'auto', zIndex: 1 }}
                             className={`${styles.scrollContainer}`}
                         >
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {lowRiskEmployees.map((employee, index) => (
-                                    <li key={employee.id} style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        fontSize: '13px',
-                                        padding: '5px ',
-                                        borderBottom: '1px solid #F1F2F6',
-                                        ...(index === lowRiskEmployees.length - 1 && { borderBottom: 'none' })
-                                    }}>
+                                    <li 
+                                        key={employee.id} 
+                                        onClick={() => handleEmployeeClick(employee)} 
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '13px',
+                                            padding: '5px ',
+                                            borderBottom: '1px solid #F1F2F6',
+                                            ...(index === lowRiskEmployees.length - 1 && { borderBottom: 'none' })
+                                        }}
+                                    >
                                         <span>{`${employee.firstName} ${employee.lastName}`}</span>
                                         <span>{(employee.riskScore).toFixed(0)}%</span>
                                     </li>
                                 ))}
                             </ul>
                         </div>
-
                     </div>
-
                 )}
                 {showMediumRisk && (
-                    <div className={`${styles.card} ${styles.neutral}`} style={{ position: 'relative', padding: '20px' }}>
+                    <div 
+                        className={`${styles.card} ${styles.neutral}`} 
+                        style={{ position: 'relative', padding: '20px' }}
+                    >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Medium Risk</h1>
 
                         <div style={{
@@ -167,14 +168,18 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div style={{ paddingTop: '40px' }}>
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {mediumRiskEmployees.map((employee, index) => (
-                                    <li key={employee.id} style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        fontSize: '13px',
-                                        padding: '5px ',
-                                        borderBottom: '1px solid #F1F2F6',
-                                        ...(index === mediumRiskEmployees.length - 1 && { borderBottom: 'none' })
-                                    }}>
+                                    <li 
+                                        key={employee.id} 
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '13px',
+                                            padding: '5px ',
+                                            borderBottom: '1px solid #F1F2F6',
+                                            ...(index === mediumRiskEmployees.length - 1 && { borderBottom: 'none' })
+                                        }}
+                                        onClick={() => handleEmployeeClick(employee)} // Trigger popup on click
+                                    >
                                         <span>{`${employee.firstName} ${employee.lastName}`}</span>
                                         <span>{(employee.riskScore).toFixed(0)}%</span>
                                     </li>
@@ -184,8 +189,12 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
 
                     </div>
                 )}
+
                 {showHighRisk && (
-                    <div className={`${styles.card} ${styles.negative}`} style={{ position: 'relative', padding: '20px' }}>
+                    <div 
+                        className={`${styles.card} ${styles.negative}`} 
+                        style={{ position: 'relative', padding: '20px' }}
+                    >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
 
                         <div style={{
@@ -210,14 +219,18 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div style={{ paddingTop: '40px' }}>
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {highRiskEmployees.map((employee, index) => (
-                                    <li key={employee.id} style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        fontSize: '13px',
-                                        padding: '5px ',
-                                        borderBottom: '1px solid #F1F2F6',
-                                        ...(index === highRiskEmployees.length - 1 && { borderBottom: 'none' })
-                                    }}>
+                                    <li 
+                                        key={employee.id} 
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '13px',
+                                            padding: '5px ',
+                                            borderBottom: '1px solid #F1F2F6',
+                                            ...(index === highRiskEmployees.length - 1 && { borderBottom: 'none' })
+                                        }}
+                                        onClick={() => handleEmployeeClick(employee)} // Trigger popup on click
+                                    >
                                         <span>{`${employee.firstName} ${employee.lastName}`}</span>
                                         <span>{(employee.riskScore).toFixed(0)}%</span>
                                     </li>
