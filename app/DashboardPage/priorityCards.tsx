@@ -4,7 +4,7 @@ import styles from './DashboardPage.module.css';
 import { areaChartComponent } from "@/components/forms/areaChart";
 import { lineChart } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
-import { pieChart } from "@/components/forms/pieChart";
+import PieChartComponent from "../../components/forms/pieChart";
 
 interface Employee {
     id?: string; 
@@ -112,7 +112,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                     {lineChart()}
                 </div>
                 <div className={styles.AreaChart}>
-                    {pieChart()}
+                    <PieChartComponent data={employees} />
                 </div>
             </div>
 

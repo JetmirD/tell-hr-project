@@ -1,9 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Label, Pie, PieChart } from "recharts"
-
+import React from "react";
+import { TrendingUp, TrendingDown, Circle } from "lucide-react"; // Updated import for fallback
+import { Label, Pie, PieChart } from "recharts";
 import {
   Card,
   CardContent,
@@ -11,43 +10,62 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { browser: "Positive", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "Neutral", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "Negative", visitors: 190, fill: "var(--color-other)" },
-]
+} from "@/components/ui/chart";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
+interface RiskLevelData {
+  riskLevel: string;
+  count: number;
+  fill: string;
+}
 
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
+interface PieChartProps {
+  data: { riskLevel: string }[];
+}
 
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig
+const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
+  const riskCounts = React.useMemo(() => {
+    const counts: Record<string, number> = {
+      low: 0,
+      medium: 0,
+      high: 0,
+    };
 
-export function pieChart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+    data.forEach((entry) => {
+      if (counts[entry.riskLevel] !== undefined) {
+        counts[entry.riskLevel]++;
+      }
+    });
+
+    return counts;
+  }, [data]);
+
+  const { low: lowCount, medium: mediumCount, high: highCount } = riskCounts;
+
+  const totalSurveys = lowCount + mediumCount + highCount;
+
+  const chartData: RiskLevelData[] = [
+    { riskLevel: "Low", count: lowCount, fill: "var(--color-safari)" },
+    { riskLevel: "Medium", count: mediumCount, fill: "var(--color-firefox)" },
+    { riskLevel: "High", count: highCount, fill: "var(--color-other)" },
+  ];
+
+  // Determine the trend
+  let trendText = "Neutral trending this month";
+  let trendIcon = <Circle className="h-4 w-4" />; // Fallback neutral icon
+
+  if (lowCount > mediumCount + highCount) {
+    trendText = "Positive trending this month";
+    trendIcon = <TrendingUp className="h-4 w-4" />;
+  } else if (highCount > lowCount + mediumCount) {
+    trendText = "Negative trending this month";
+    trendIcon = <TrendingDown className="h-4 w-4" />;
+  }
 
   return (
     <Card className="flex flex-col">
@@ -57,8 +75,13 @@ export function pieChart() {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
+          config={{
+            visitors: { label: "Visitors" },
+            safari: { label: "Safari", color: "hsl(var(--chart-2))" },
+            firefox: { label: "Firefox", color: "hsl(var(--chart-3))" },
+            other: { label: "Other", color: "hsl(var(--chart-5))" },
+          }}
         >
           <PieChart>
             <ChartTooltip
@@ -67,8 +90,8 @@ export function pieChart() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="count"
+              nameKey="riskLevel"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -87,7 +110,7 @@ export function pieChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalSurveys.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -97,7 +120,7 @@ export function pieChart() {
                           Surveys
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -107,12 +130,15 @@ export function pieChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Neutral trending this month <TrendingUp className="h-4 w-4" />
+          {trendText} {trendIcon}
         </div>
-        <div className="leading-none text-muted-foreground">
-          Showing positive negative and neutral relation
+        <div className="leading-none text-muted-foreground text-center">
+           Showing positive, negative, and neutral sentiment relation
         </div>
+
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
+
+export default PieChartComponent;
