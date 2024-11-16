@@ -21,7 +21,7 @@ const config = {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
-  			background: 'hsl(var(--background))',
+  			background: '#F7F8FB', // DONT CHANGE THIS!! Changed background color data, now the dark mode wont look good
   			foreground: 'hsl(var(--foreground))',
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
