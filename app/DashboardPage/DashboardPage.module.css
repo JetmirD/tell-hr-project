@@ -89,14 +89,12 @@
     justify-content: center;
 }
 
-/* Separate container for charts */
 .chartsContainer {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
     margin-top: 2rem;
 }
-/* General scrollbar styling */
 .scrollContainer {
     padding-top: 10px;
     max-height: 200px;
@@ -105,34 +103,32 @@
     z-index: 1;
 }
 
-/* Scrollbar styling for WebKit browsers (Chrome, Edge, Safari) */
 .scrollContainer::-webkit-scrollbar {
-    width: 7px; /* Thin scrollbar width */
+    width: 7px;
+
 }
 
 .scrollContainer::-webkit-scrollbar-track {
-    background: transparent; /* Transparent track */
+    background: transparent;
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-    background-color: #eaebf1; /* Light gray color for the thumb */
-    border-radius: 10px; /* Rounded corners for a modern look */
-    border: 2px solid transparent; /* Space around the thumb */
-    background-clip: content-box; /* Proper padding for the thumb */
+    background-color: #eaebf1;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 
 .scroll-container::-webkit-scrollbar-thumb:hover {
-    background-color: #aaa; /* Darker gray on hover for interactivity */
+    background-color: #aaa;
 }
 
-/* Scrollbar styling for Firefox */
 .scroll-container {
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #ccc transparent; /* Thumb and track colors */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
 }
 
 
-/* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .priorityCards {
         flex-direction: column;
@@ -152,52 +148,123 @@
 
 .popup {
     position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+
+
+
+
+.popupHeader {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.questionsList {
+    max-height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionAnswerItem {
+    padding: 10px;
+    border-radius: 20px;
+    border-bottom: 3px solid rgb(190, 190, 190);
+}
+
+.question {
+    font-weight: 500;
+    color: black;
+}
+
+.answer {
+    color: #333;
+    margin-top: 5px;
+}
+
+.icon {
+    font-size: 1rem;
+    margin-left: 8px;
+    color: #666;
+}
+
+.question {
+    padding: 10px 0;
+
+}
+
+.question:hover {
+    color: #333;
+    cursor: pointer;
+}
+
+.fa {
+    font-size: 1rem;
+    color: black;
+    font-size: 100;
+}
+
+.overlay {
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.678);
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+
 }
 
 .popupContent {
-    background-color: white;
+    background: #fff;
     padding: 20px;
-    border-radius: 10px;
-    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     max-width: 600px;
-    width: 100%;
-    max-height: 80%;
-    overflow-y: auto;
+    width: 90%;
+    z-index: 1001;
+    position: relative;
+    transform: scale(0.8);
+    opacity: 0;
+    animation: scaleIn 0.4s ease forwards;
 }
 
 .closeButton {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: none;
+    background: transparent;
     border: none;
-    font-size: 20px;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
-.navigationButtons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
 }
 
-.navButton {
-    padding: 5px 15px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.navButton:hover {
-    background-color: #0056b3;
+@keyframes scaleIn {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

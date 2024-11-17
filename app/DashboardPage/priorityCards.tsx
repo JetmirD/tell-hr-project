@@ -5,6 +5,8 @@ import { areaChartComponent } from "@/components/forms/areaChart";
 import { lineChart } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import PieChartComponent from "../../components/forms/pieChart";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faLeaf, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
@@ -30,7 +32,7 @@ const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
 function MyAreaChart({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-    const [answerIndex, setAnswerIndex] = useState<number>(0); // Index for navigating answers
+    const [answerIndex, setAnswerIndex] = useState<number>(0); 
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value.toLowerCase());
@@ -119,15 +121,16 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         >
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {lowRiskEmployees.map((employee, index) => (
-                                    <li 
-                                        key={employee.id} 
-                                        onClick={() => handleEmployeeClick(employee)} 
+                                    <li
+                                        key={employee.id}
+                                        onClick={() => handleEmployeeClick(employee)}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             fontSize: '13px',
                                             padding: '5px ',
                                             borderBottom: '1px solid #F1F2F6',
+                                            cursor: 'pointer',
                                             ...(index === lowRiskEmployees.length - 1 && { borderBottom: 'none' })
                                         }}
                                     >
@@ -140,8 +143,8 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                     </div>
                 )}
                 {showMediumRisk && (
-                    <div 
-                        className={`${styles.card} ${styles.neutral}`} 
+                    <div
+                        className={`${styles.card} ${styles.neutral}`}
                         style={{ position: 'relative', padding: '20px' }}
                     >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Medium Risk</h1>
@@ -168,17 +171,18 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div style={{ paddingTop: '40px' }}>
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {mediumRiskEmployees.map((employee, index) => (
-                                    <li 
-                                        key={employee.id} 
+                                    <li
+                                        key={employee.id}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             fontSize: '13px',
                                             padding: '5px ',
                                             borderBottom: '1px solid #F1F2F6',
+                                            cursor: 'pointer',
                                             ...(index === mediumRiskEmployees.length - 1 && { borderBottom: 'none' })
                                         }}
-                                        onClick={() => handleEmployeeClick(employee)} // Trigger popup on click
+                                        onClick={() => handleEmployeeClick(employee)} 
                                     >
                                         <span>{`${employee.firstName} ${employee.lastName}`}</span>
                                         <span>{(employee.riskScore).toFixed(0)}%</span>
@@ -191,8 +195,8 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                 )}
 
                 {showHighRisk && (
-                    <div 
-                        className={`${styles.card} ${styles.negative}`} 
+                    <div
+                        className={`${styles.card} ${styles.negative}`}
                         style={{ position: 'relative', padding: '20px' }}
                     >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
@@ -219,17 +223,18 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div style={{ paddingTop: '40px' }}>
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {highRiskEmployees.map((employee, index) => (
-                                    <li 
-                                        key={employee.id} 
+                                    <li
+                                        key={employee.id}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             fontSize: '13px',
                                             padding: '5px ',
                                             borderBottom: '1px solid #F1F2F6',
+                                            cursor: 'pointer',
                                             ...(index === highRiskEmployees.length - 1 && { borderBottom: 'none' })
                                         }}
-                                        onClick={() => handleEmployeeClick(employee)} // Trigger popup on click
+                                        onClick={() => handleEmployeeClick(employee)} 
                                     >
                                         <span>{`${employee.firstName} ${employee.lastName}`}</span>
                                         <span>{(employee.riskScore).toFixed(0)}%</span>
@@ -244,33 +249,55 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
 
             {/* Popup Section */}
             {selectedEmployee && (
-                <div className={styles.popup} onClick={closePopup}>
-                    <div 
-                        className={styles.popupContent} 
-                        onClick={(e) => e.stopPropagation()} // Prevent popup from closing when clicking inside
+                <div className={styles.overlay} onClick={closePopup}>
+                    <div
+                        className={styles.popupContent}
+                        onClick={(e) => e.stopPropagation()} 
                     >
                         <button onClick={closePopup} className={styles.closeButton}>
-                            ✖ Close
+                            <FontAwesomeIcon icon={faClose} color="#939292" fontSize="19px" />
                         </button>
-                        <h2>{`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}</h2>
-                        <div>
-                            <strong>{responses[answerIndex].label}:</strong> 
-                            {responses[answerIndex].value || "N/A"}
-                        </div>
+                        <h2 className={styles.popupHeader}>
+                            {`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}
+                        </h2>
+                        <div className={styles.scrollContainer} style={{ height: '400px', maxHeight: '400px' }}>
+                            {responses.map((response, index) => (
+                                <div key={index} className={styles.questionAnswerItem}>
+                                    <div
+                                        className={styles.question}
+                                        onClick={() => setAnswerIndex(answerIndex === index ? -1 : index)}
+                                        style={{
+                                            cursor: "pointer",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: '18px', fontWeight: '500' }}>
+                                            {response.label === "Salary Response" && <FontAwesomeIcon icon={faMoneyBill} color="#3BB54A" />}
+                                            {response.label === "Manager Response" && <FontAwesomeIcon icon={faBriefcase} color="#9f6f6d" />}
+                                            {response.label === "Benefits Response" && <FontAwesomeIcon icon={faGift} color="#D0004F" />}
+                                            {response.label === "Career Response" && <FontAwesomeIcon icon={faGraduationCap} color="#444444" />}
+                                            {response.label === "Environment Response" && <FontAwesomeIcon icon={faBuilding} color="#FF901D" />}
+                                            <h1>{response.label}</h1>
+                                        </div>
+                                        <span
+                                            className={styles.icon}
+                                            style={{
+                                                transition: "transform 1s ease",
+                                            }}
+                                        >
+                                            <FontAwesomeIcon icon={answerIndex === index ? faMinus : faPlus} />
+                                        </span>
 
-                        {/* Display current answer position */}
-                        <div className={styles.answerPosition}>
-                            {answerIndex + 1} / {responses.length}
-                        </div>
-
-                        {/* Navigation Buttons */}
-                        <div className={styles.navigationButtons}>
-                            <button onClick={prevAnswer} className={styles.navButton}>
-                                ← Previous
-                            </button>
-                            <button onClick={nextAnswer} className={styles.navButton}>
-                                Next → 
-                            </button>
+                                    </div>
+                                    {answerIndex === index && (
+                                        <div className={styles.answer}>
+                                            {response.value || "N/A"}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
