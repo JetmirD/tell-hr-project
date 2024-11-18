@@ -7,6 +7,8 @@ import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import PieChartComponent from "../../components/forms/pieChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faLeaf, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css'; // Include the CSS styles
 
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
@@ -32,7 +34,7 @@ const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
 function MyAreaChart({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-    const [answerIndex, setAnswerIndex] = useState<number>(0); 
+    const [answerIndex, setAnswerIndex] = useState<number>(0);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value.toLowerCase());
@@ -94,8 +96,116 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
 
             {/* Cards Section */}
             <div className={`${styles.priorityCards} ${visibleCardsCount === 1 ? styles.centeredCard : ''}`}>
+                {showHighRisk && (
+                    <div
+                        className={`${styles.card} ${styles.negative}`}
+                        style={{ position: 'relative', padding: '20px' }}
+                        data-tooltip-id="high-risk-tooltip"
+                        data-tooltip-content="These employees are actively seeking new opportunities and sending CVs to other companies. Immediate attention is required to address their concerns and retain them."
+                    >
+                        <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
+
+                        <div style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            height: '19px',
+                            backgroundColor: '#F7F8FB',
+                            top: '50px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0 20px',
+                            fontWeight: 600,
+                            fontSize: '12px',
+                            color: '#B7BCCA',
+                            marginTop: '3px'
+                        }}>
+                            <p style={{ margin: 0 }}>Name</p>
+                            <p style={{ margin: 0 }}>Score</p>
+                        </div>
+                        <div style={{ paddingTop: '40px' }}>
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                                {highRiskEmployees.map((employee, index) => (
+                                    <li
+                                        key={employee.id}
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '13px',
+                                            padding: '5px ',
+                                            borderBottom: '1px solid #F1F2F6',
+                                            cursor: 'pointer',
+                                            ...(index === highRiskEmployees.length - 1 && { borderBottom: 'none' })
+                                        }}
+                                        onClick={() => handleEmployeeClick(employee)}
+                                    >
+                                        <span>{`${employee.firstName} ${employee.lastName}`}</span>
+                                        <span>{(employee.riskScore).toFixed(0)}%</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+                {showMediumRisk && (
+                    <div
+                        className={`${styles.card} ${styles.neutral}`}
+                        style={{ position: 'relative', padding: '20px' }}
+                        data-tooltip-id="medium-risk-tooltip"
+                        data-tooltip-content="These employees are relatively satisfied but will likely leave if they receive a good offer elsewhere. Proactive engagement could help strengthen their commitment."
+                    >
+                        <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Medium Risk</h1>
+
+                        <div style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            height: '19px',
+                            backgroundColor: '#F7F8FB',
+                            top: '50px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0 20px',
+                            fontWeight: 600,
+                            fontSize: '12px',
+                            color: '#B7BCCA',
+                            marginTop: '3px'
+                        }}>
+                            <p style={{ margin: 0 }}>Name</p>
+                            <p style={{ margin: 0 }}>Score</p>
+                        </div>
+
+                        <div style={{ paddingTop: '40px' }}>
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                                {mediumRiskEmployees.map((employee, index) => (
+                                    <li
+                                        key={employee.id}
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            fontSize: '13px',
+                                            padding: '5px ',
+                                            borderBottom: '1px solid #F1F2F6',
+                                            cursor: 'pointer',
+                                            ...(index === mediumRiskEmployees.length - 1 && { borderBottom: 'none' })
+                                        }}
+                                        onClick={() => handleEmployeeClick(employee)}
+                                    >
+                                        <span>{`${employee.firstName} ${employee.lastName}`}</span>
+                                        <span>{(employee.riskScore).toFixed(0)}%</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                    </div>
+                )}
+
                 {showLowRisk && (
-                    <div className={`${styles.card} ${styles.positive}`} style={{ position: 'relative', padding: '20px' }}>
+                    <div className={`${styles.card} ${styles.positive}`} style={{ position: 'relative', padding: '20px' }}
+                        data-tooltip-id="low-risk-tooltip"
+                        data-tooltip-content="These employees are highly satisfied and committed to their current role. Minimal attention is required, but maintaining their satisfaction is key."
+                    >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Low Risk</h1>
                         <div style={{
                             position: 'absolute',
@@ -142,109 +252,37 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         </div>
                     </div>
                 )}
-                {showMediumRisk && (
-                    <div
-                        className={`${styles.card} ${styles.neutral}`}
-                        style={{ position: 'relative', padding: '20px' }}
-                    >
-                        <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>Medium Risk</h1>
+                <Tooltip
+                    id="high-risk-tooltip"
+                    style={{
+                        maxWidth: '250px',
+                        textAlign: 'center',
+                        padding: '10px',
+                        backgroundColor: '#bd0f0f',
+                        color: '#fff',
+                        borderRadius: '5px'
+                    }}
+                />
 
-                        <div style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            height: '19px',
-                            backgroundColor: '#F7F8FB',
-                            top: '50px',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            padding: '0 20px',
-                            fontWeight: 600,
-                            fontSize: '12px',
-                            color: '#B7BCCA',
-                            marginTop: '3px'
-                        }}>
-                            <p style={{ margin: 0 }}>Name</p>
-                            <p style={{ margin: 0 }}>Score</p>
-                        </div>
+                <Tooltip
+                    id="medium-risk-tooltip"
+                    style={{
+                        maxWidth: '250px',
+                        textAlign: 'center',
+                        padding: '10px',
+                        backgroundColor: '#958900'
+                    }}
+                />
+                <Tooltip
+                    id="low-risk-tooltip"
+                    style={{
+                        maxWidth: '250px',
+                        textAlign: 'center',
+                        padding: '10px',
+                        backgroundColor: '#008535'
+                    }}
+                />
 
-                        <div style={{ paddingTop: '40px' }}>
-                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
-                                {mediumRiskEmployees.map((employee, index) => (
-                                    <li
-                                        key={employee.id}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            fontSize: '13px',
-                                            padding: '5px ',
-                                            borderBottom: '1px solid #F1F2F6',
-                                            cursor: 'pointer',
-                                            ...(index === mediumRiskEmployees.length - 1 && { borderBottom: 'none' })
-                                        }}
-                                        onClick={() => handleEmployeeClick(employee)} 
-                                    >
-                                        <span>{`${employee.firstName} ${employee.lastName}`}</span>
-                                        <span>{(employee.riskScore).toFixed(0)}%</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                    </div>
-                )}
-
-                {showHighRisk && (
-                    <div
-                        className={`${styles.card} ${styles.negative}`}
-                        style={{ position: 'relative', padding: '20px' }}
-                    >
-                        <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
-
-                        <div style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            height: '19px',
-                            backgroundColor: '#F7F8FB',
-                            top: '50px',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            padding: '0 20px',
-                            fontWeight: 600,
-                            fontSize: '12px',
-                            color: '#B7BCCA',
-                            marginTop: '3px'
-                        }}>
-                            <p style={{ margin: 0 }}>Name</p>
-                            <p style={{ margin: 0 }}>Score</p>
-                        </div>
-
-                        <div style={{ paddingTop: '40px' }}>
-                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
-                                {highRiskEmployees.map((employee, index) => (
-                                    <li
-                                        key={employee.id}
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            fontSize: '13px',
-                                            padding: '5px ',
-                                            borderBottom: '1px solid #F1F2F6',
-                                            cursor: 'pointer',
-                                            ...(index === highRiskEmployees.length - 1 && { borderBottom: 'none' })
-                                        }}
-                                        onClick={() => handleEmployeeClick(employee)} 
-                                    >
-                                        <span>{`${employee.firstName} ${employee.lastName}`}</span>
-                                        <span>{(employee.riskScore).toFixed(0)}%</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                    </div>
-                )}
             </div>
 
             {/* Popup Section */}
@@ -252,7 +290,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                 <div className={styles.overlay} onClick={closePopup}>
                     <div
                         className={styles.popupContent}
-                        onClick={(e) => e.stopPropagation()} 
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <button onClick={closePopup} className={styles.closeButton}>
                             <FontAwesomeIcon icon={faClose} color="#939292" fontSize="19px" />
