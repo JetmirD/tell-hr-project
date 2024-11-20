@@ -6,7 +6,6 @@ import { LineChartComponent } from "@/components/forms/lineChart";
 export default async function DashboardPage() {
     const supabase = await createClient();
 
-    // Query to fetch employee risk data from the 'results' table
     const { data: results, error: resultsError } = await supabase
         .from('results')
         .select(`
@@ -21,7 +20,6 @@ export default async function DashboardPage() {
         return <div>Error loading employee data.</div>;
     }
 
-    // Query to fetch survey answers from the 'survey_answers' table
     const { data: surveyAnswers, error: surveyAnswersError } = await supabase
         .from('survey_answers')
         .select(`
