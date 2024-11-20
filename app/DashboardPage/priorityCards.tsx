@@ -30,8 +30,8 @@ interface Employee {
 const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
     return employees.filter(employee => employee.riskLevel === riskLevel);
 };
-
-function MyAreaChart({ employees }: { employees: Employee[] }) {
+{/* add a new parameter for the MyAreaChart for the piechart coming from the page.tsx file  */}
+function MyAreaChart({ employees }: { employees: Employee[] }) { 
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
     const [answerIndex, setAnswerIndex] = useState<number>(0);
@@ -352,7 +352,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                     {/* {LineChartComponent("Sentiment", "January - June 2024")} */}
                 </div>
                 <div className={styles.AreaChart}>
-                    <PieChartComponent data={employees} />
+                    {/* <PieChartComponent /> where the piechart will be shown*/}
                 </div>
             </div>
 

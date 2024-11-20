@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, TrendingDown, Circle } from "lucide-react"; // Updated import for fallback
+import { TrendingUp, TrendingDown, Circle } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 import {
   Card,
@@ -26,9 +26,11 @@ interface RiskLevelData {
 
 interface PieChartProps {
   data: { riskLevel: string }[];
+  totalSurveys: number; // Receive totalSurveys as a prop
 }
 
-const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
+const PieChartComponent: React.FC<PieChartProps> = ({ data, totalSurveys }) => {
+  console.log(data)
   const riskCounts = React.useMemo(() => {
     const counts: Record<string, number> = {
       low: 0,
@@ -44,10 +46,9 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
 
     return counts;
   }, [data]);
+  console.log("jetmir", riskCounts)
 
   const { low: lowCount, medium: mediumCount, high: highCount } = riskCounts;
-
-  const totalSurveys = lowCount + mediumCount + highCount;
 
   const chartData: RiskLevelData[] = [
     { riskLevel: "low", count: lowCount, fill: "var(--color-safari)" },
@@ -110,7 +111,7 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalSurveys.toLocaleString()}
+                          {totalSurveys.toLocaleString()} {/* Use totalSurveys prop */}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -135,7 +136,6 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
         <div className="leading-none text-muted-foreground text-center">
            Showing positive, negative, and neutral sentiment relation
         </div>
-
       </CardFooter>
     </Card>
   );

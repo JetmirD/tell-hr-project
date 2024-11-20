@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import PieChartComponent from '@/components/forms/pieChart';
 import MyAreaChart from './priorityCards';
 import { LineChartComponent } from "@/components/forms/lineChart";
 export default async function DashboardPage() {
@@ -21,17 +22,21 @@ export default async function DashboardPage() {
         return <div>Error loading employee data.</div>;
     }
 
-    // Query to fetch survey answers from the 'survey_answers' table
-    const { data: surveyAnswers, error: surveyAnswersError } = await supabase
+    // Query to fetch survey answers and total count from the 'survey_answers' table
+    const { data: surveyAnswers, error: surveyAnswersError, count: totalSurveys } = await supabase
         .from('survey_answers')
-        .select(`
+        .select(
+            `
             employeeId, 
             salary_response, 
             manager_response, 
             benefits_response, 
             career_response, 
             environment_response
-        `);
+        `,
+            { count: 'exact' } // Fetch the exact count of surveys
+        );
+        console.log(totalSurveys)
 
     if (surveyAnswersError) {
         console.error("Error fetching survey answers:", surveyAnswersError);
@@ -57,7 +62,7 @@ export default async function DashboardPage() {
     // Merge the results from both queries based on employeeId
     const employees = results?.map((result: any) => {
         // Find the survey answers for this employee
-        const survey = surveyAnswers.find(
+        const survey = surveyAnswers?.find(
             (surveyAnswer) => surveyAnswer.employeeId === result.employeeId
         );
 
@@ -79,7 +84,7 @@ export default async function DashboardPage() {
         <>
             <MyAreaChart employees={employees} />
             <LineChartComponent data={chartData} />
+        <PieChartComponent data={results} totalSurveys={totalSurveys || 0} /> {/*remove this one*/}
         </>
     );
-    
 }
