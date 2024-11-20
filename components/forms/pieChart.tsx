@@ -50,9 +50,9 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
   const totalSurveys = lowCount + mediumCount + highCount;
 
   const chartData: RiskLevelData[] = [
-    { riskLevel: "Low", count: lowCount, fill: "var(--color-safari)" },
-    { riskLevel: "Medium", count: mediumCount, fill: "var(--color-firefox)" },
-    { riskLevel: "High", count: highCount, fill: "var(--color-other)" },
+    { riskLevel: "low", count: lowCount, fill: "var(--color-safari)" },
+    { riskLevel: "medium", count: mediumCount, fill: "var(--color-firefox)" },
+    { riskLevel: "high", count: highCount, fill: "var(--color-other)" },
   ];
 
   // Determine the trend

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
 import { areaChartComponent } from "@/components/forms/areaChart";
-import { lineChart } from "@/components/forms/lineChart";
+import { LineChartComponent } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import PieChartComponent from "../../components/forms/pieChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -101,7 +101,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         className={`${styles.card} ${styles.negative}`}
                         style={{ position: 'relative', padding: '20px' }}
                         data-tooltip-id="high-risk-tooltip"
-                        data-tooltip-content="These employees are actively seeking new opportunities and sending CVs to other companies. Immediate attention is required to address their concerns and retain them."
+                        data-tooltip-content="These employees are actively seeking new opportunities. Immediate attention is required to address their concerns and retain them."
                     >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
 
@@ -349,7 +349,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
             {/* Charts Section */}
             <div className={styles.chartsContainer}>
                 <div className={styles.AreaChart}>
-                    {lineChart()}
+                    {/* {LineChartComponent("Sentiment", "January - June 2024")} */}
                 </div>
                 <div className={styles.AreaChart}>
                     <PieChartComponent data={employees} />

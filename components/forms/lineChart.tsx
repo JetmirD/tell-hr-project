@@ -2,7 +2,6 @@
 
 import { TrendingUp } from "lucide-react"
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -17,27 +16,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-]
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig
+export function LineChartComponent({ data }: { data: { month: string, sentiment: number }[] }) {
+  const sortedData = data.sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
 
-export function lineChart() {
+  const chartData = sortedData.map((item: any) => ({
+    month: new Date(item.month).toLocaleDateString('en-US', { month: 'long' }), 
+    sentiment: Number(item.sentiment.toString().slice(0, 4)), 
+  }));
+
+
+  const chartConfig = {
+    sentiment: {
+      label: "Sentiment",
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
   return (
     <Card>
       <CardHeader>
@@ -68,16 +62,17 @@ export function lineChart() {
               content={<ChartTooltipContent indicator="line" />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="sentiment"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-sentiment)"
               strokeWidth={2}
               dot={{
-                fill: "var(--color-desktop)",
+                fill: "var(--color-sentiment)",
               }}
               activeDot={{
                 r: 6,
               }}
+              
             >
               <LabelList
                 position="top"

@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import MyAreaChart from './priorityCards';
-
+import { LineChartComponent } from "@/components/forms/lineChart";
 export default async function DashboardPage() {
     const supabase = await createClient();
 
@@ -38,6 +38,22 @@ export default async function DashboardPage() {
         return <div>Error loading survey answers.</div>;
     }
 
+    const { data: survey, error: surveyError } = await supabase
+        .from('survey')
+        .select(`
+            created_at,
+            sentiment
+        `);
+
+    if (surveyError) {
+        console.error("Error fetching survey:", surveyError);
+        return <div>Error loading survey.</div>;
+    }
+    const chartData = survey?.map((item: any) => ({
+        month: item.created_at,  
+        sentiment: item.sentiment,
+      })) || [];
+    
     // Merge the results from both queries based on employeeId
     const employees = results?.map((result: any) => {
         // Find the survey answers for this employee
@@ -59,5 +75,11 @@ export default async function DashboardPage() {
         };
     }) || [];
 
-    return <MyAreaChart employees={employees} />;
+    return (
+        <>
+            <MyAreaChart employees={employees} />
+            <LineChartComponent data={chartData} />
+        </>
+    );
+    
 }
