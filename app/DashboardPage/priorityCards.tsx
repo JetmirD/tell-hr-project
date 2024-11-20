@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
-import { areaChartComponent } from "@/components/forms/areaChart";
 import { LineChartComponent } from "@/components/forms/lineChart";
 import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
 import PieChartComponent from "../../components/forms/pieChart";
@@ -360,9 +359,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                 <div className={styles.AreaChart}>
                     {horizontalBarChart()}
                 </div>
-                <div className={styles.AreaChart}>
-                    {areaChartComponent()}
-                </div>
+                
             </div>
         </main>
     );
