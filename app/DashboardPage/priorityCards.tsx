@@ -123,7 +123,10 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                             <p style={{ margin: 0 }}>Name</p>
                             <p style={{ margin: 0 }}>Score</p>
                         </div>
-                        <div style={{ paddingTop: '40px' }}>
+                        <div
+                            style={{ marginTop: '40px', maxHeight: '130px', overflowY: 'auto', zIndex: 1 }}
+                            className={`${styles.scrollContainer}`}
+                        >           
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {highRiskEmployees.map((employee, index) => (
                                     <li
@@ -175,8 +178,10 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                             <p style={{ margin: 0 }}>Score</p>
                         </div>
 
-                        <div style={{ paddingTop: '40px' }}>
-                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                        <div
+                            style={{ marginTop: '40px', maxHeight: '130px', overflowY: 'auto', zIndex: 1 }}
+                            className={`${styles.scrollContainer}`}
+                        >                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {mediumRiskEmployees.map((employee, index) => (
                                     <li
                                         key={employee.id}
@@ -226,7 +231,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                             <p style={{ margin: 0 }}>Score</p>
                         </div>
                         <div
-                            style={{ marginTop: '40px', maxHeight: '110px', overflowY: 'auto', zIndex: 1 }}
+                            style={{ marginTop: '40px', maxHeight: '130px', overflowY: 'auto', zIndex: 1 }}
                             className={`${styles.scrollContainer}`}
                         >
                             <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
