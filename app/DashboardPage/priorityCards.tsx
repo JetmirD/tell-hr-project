@@ -10,6 +10,7 @@ import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faBuilding, faClose,
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'; // Include the CSS styles
 import { useDashboard } from './DashboardContext';
+import { RadarChartComponent } from "@/components/forms/radarChart";
 
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
@@ -346,7 +347,6 @@ function MyAreaChart() {
                 </div>
             )}
 
-            {/* Charts Section */}
             <div className={styles.chartsContainer}>
                 <div className={styles.lineChart}>
                     <LineChartComponent data={chartData} />
@@ -356,9 +356,11 @@ function MyAreaChart() {
                 </div>
             </div>
             <div className={styles.chartsContainer}>
-
                 <div className={styles.AreaChart}>
                     {/* <HorizontalBarChart data={averageRiskScores} /> */}
+                </div>
+                <div className={styles.AreaChart}>
+                    <RadarChartComponent />
                 </div>
             </div>
         </main>
