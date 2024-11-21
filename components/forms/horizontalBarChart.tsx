@@ -1,99 +1,105 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { browser: "Front", visitors: 275, fill: "var(--color-Front)" },
-  { browser: "Back", visitors: 200, fill: "var(--color-Back)" },
-  { browser: "Data", visitors: 187, fill: "var(--color-Data)" },
-  { browser: "Finance", visitors: 173, fill: "var(--color-Finance)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
+} from "@/components/ui/chart";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
+const chartConfig: ChartConfig = {
+  Frontend: { label: "Frontend", color: "hsl(var(--chart-1))" },
+  Backend: { label: "Backend", color: "hsl(var(--chart-2))" },
+  DataEngineering: { label: "Data-Eng", color: "hsl(0 72.2% 50.6%)" },
+  SoftwareEngineering: {
+    label: "Sales",
+    color: "hsl(175.9 60.8% 19%)",
   },
-  Front: {
-    label: "Front",
-    color: "hsl(var(--chart-1))",
+  BusinessIntelligence: {
+    label: "ML",
+    color: "hsl(295.4 70.2% 32.9%)",
   },
-  Back: {
-    label: "Back",
-    color: "hsl(var(--chart-2))",
-  },
-  Data: {
-    label: "Data",
-    color: "hsl(var(--chart-3))",
-  },
-  Finance: {
-    label: "Finance",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig
 
-export function horizontalBarChart() {
+};
+
+const normalizeKey = (key: string) =>
+  key.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+interface ChartData {
+  department: string;
+  averageRiskScore: number;
+}
+
+interface HorizontalBarChartProps {
+  data: ChartData[];
+}
+
+export function HorizontalBarChart({ data }: HorizontalBarChartProps) {
+  const mappedData = Object.keys(chartConfig).map((departmentKey) => {
+    const departmentData = data.find(
+      (d) => normalizeKey(d.department) === normalizeKey(departmentKey)
+    );
+
+    return {
+      department: departmentKey,
+      RiskScore: departmentData ? departmentData.averageRiskScore : 0,
+      fill: chartConfig[departmentKey as keyof typeof chartConfig]?.color || "#000000", // Apply correct color or default to black
+    };
+  });
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Departments</CardTitle>
+        <CardTitle style={{textAlign:'center'}}>Departments</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={mappedData}
             layout="vertical"
             margin={{
-              left: 0,
+              left: 10,
             }}
           >
+            {/* Ensure Y-axis labels align with bars */}
             <YAxis
-              dataKey="browser"
+              dataKey="department"
               type="category"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) =>
-                chartConfig[value as keyof typeof chartConfig]?.label
+                chartConfig[value as keyof typeof chartConfig]?.label || value
               }
             />
-            <XAxis dataKey="visitors" type="number" hide />
+            <XAxis dataKey="RiskScore" type="number" />
             <ChartTooltip
-              cursor={false}
+              cursor={true}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="visitors" layout="vertical" radius={5} />
+            <Bar dataKey="RiskScore" layout="vertical" radius={5} fill="fill" />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          FrontEnd up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total department data
-        </div>
-      </CardFooter>
+      <CardFooter className="flex-col items-center justify-center text-center gap-2 text-sm">
+  <div className="flex items-center justify-center gap-2 font-medium leading-none">
+    Data Engineering up by 5.2% this month <TrendingUp className="h-4 w-4" />
+  </div>
+  <div className="flex items-center justify-center gap-2 leading-none text-muted-foreground">
+    Displaying the 5 departments with the highest risk of employee turnover.
+  </div>
+</CardFooter>
     </Card>
   )
 }
