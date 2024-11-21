@@ -77,9 +77,9 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data, totalSurveys }) => {
           className="mx-auto aspect-square max-h-[250px]"
           config={{
             visitors: { label: "Visitors" },
-            safari: { label: "Safari", color: "hsl(var(--chart-2))" },
-            firefox: { label: "Firefox", color: "hsl(var(--chart-3))" },
-            other: { label: "Other", color: "hsl(var(--chart-5))" },
+            safari: { label: "Safari", color: "hsl(142.1 76.2% 36.3%)" },
+            firefox: { label: "Firefox", color: "hsl(45.4 93.4% 47.5%)" },
+            other: { label: "Other", color: "hsl(0 72.2% 50.6%)" },
           }}
         >
           <PieChart>

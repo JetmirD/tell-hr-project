@@ -57,9 +57,12 @@ function MyAreaChart() {
         );
     };
 
-    const lowRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "low"));
-    const mediumRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "medium"));
-    const highRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "high"));
+    const lowRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "low"))
+    .sort((a, b) => b.riskScore - a.riskScore);
+    const mediumRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "medium"))
+    .sort((a, b) => b.riskScore - a.riskScore);
+    const highRiskEmployees = filterEmployeesByName(filterByRiskLevel(employees, "high"))
+    .sort((a, b) => b.riskScore - a.riskScore);;
 
     const showLowRisk = lowRiskEmployees.length > 0;
     const showMediumRisk = mediumRiskEmployees.length > 0;
@@ -75,13 +78,7 @@ function MyAreaChart() {
         { label: "Environment Response", value: selectedEmployee?.environment_response }
     ];
 
-    const nextAnswer = () => {
-        setAnswerIndex((prevIndex) => (prevIndex + 1) % responses.length);
-    };
 
-    const prevAnswer = () => {
-        setAnswerIndex((prevIndex) => (prevIndex - 1 + responses.length) % responses.length);
-    };
 
     return (
         <main style={{ gap: '1rem', marginTop: '-10%' }}>
