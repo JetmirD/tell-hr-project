@@ -97,7 +97,7 @@ export function HorizontalBarChart({ data }: HorizontalBarChartProps) {
     Data Engineering up by 5.2% this month <TrendingUp className="h-4 w-4" />
   </div>
   <div className="flex items-center justify-center gap-2 leading-none text-muted-foreground">
-    Displaying the 5 departments with the highest risk of employee turnover.
+    Departments with the highest risk of employee turnover.
   </div>
 </CardFooter>
     </Card>
