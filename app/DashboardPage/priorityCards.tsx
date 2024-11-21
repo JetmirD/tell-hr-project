@@ -1,14 +1,15 @@
+// components/forms/priorityCards.tsx
 "use client";
 import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
-import { areaChartComponent } from "@/components/forms/areaChart";
-import { lineChart } from "@/components/forms/lineChart";
-import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
-import PieChartComponent from "../../components/forms/pieChart";
+import { LineChartComponent } from "@/components/forms/lineChart";
+// import { HorizontalBarChart } from '@/components/forms/horizontalBarChart';
+import PieChartComponent from "@/components/forms/pieChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faLeaf, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'; // Include the CSS styles
+import { useDashboard } from './DashboardContext';
 
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
@@ -31,7 +32,8 @@ const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
     return employees.filter(employee => employee.riskLevel === riskLevel);
 };
 
-function MyAreaChart({ employees }: { employees: Employee[] }) {
+function MyAreaChart() {
+    const { employees, averageRiskScores, chartData, results, totalSurveys } = useDashboard();
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
     const [answerIndex, setAnswerIndex] = useState<number>(0);
@@ -82,7 +84,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
     };
 
     return (
-        <main style={{ gap: '1rem' }}>
+        <main style={{ gap: '1rem', marginTop: '-10%' }}>
             {/* Search input */}
             <div className={styles.searchBox}>
                 <input
@@ -101,7 +103,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         className={`${styles.card} ${styles.negative}`}
                         style={{ position: 'relative', padding: '20px' }}
                         data-tooltip-id="high-risk-tooltip"
-                        data-tooltip-content="These employees are actively seeking new opportunities and sending CVs to other companies. Immediate attention is required to address their concerns and retain them."
+                        data-tooltip-content="These employees are actively seeking new opportunities. Immediate attention is required to address their concerns and retain them."
                     >
                         <h1 style={{ fontSize: '14px', fontWeight: 500, marginTop: '-3px' }}>High Risk</h1>
 
@@ -181,7 +183,8 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div
                             style={{ marginTop: '40px', maxHeight: '130px', overflowY: 'auto', zIndex: 1 }}
                             className={`${styles.scrollContainer}`}
-                        >                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                        >
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {mediumRiskEmployees.map((employee, index) => (
                                     <li
                                         key={employee.id}
@@ -348,20 +351,17 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
 
             {/* Charts Section */}
             <div className={styles.chartsContainer}>
-                <div className={styles.AreaChart}>
-                    {lineChart()}
+                <div className={styles.lineChart}>
+                    <LineChartComponent data={chartData} />
                 </div>
                 <div className={styles.AreaChart}>
-                    <PieChartComponent data={employees} />
+                    <PieChartComponent data={results} totalSurveys={totalSurveys} />
                 </div>
             </div>
-
             <div className={styles.chartsContainer}>
+
                 <div className={styles.AreaChart}>
-                    {horizontalBarChart()}
-                </div>
-                <div className={styles.AreaChart}>
-                    {areaChartComponent()}
+                    {/* <HorizontalBarChart data={averageRiskScores} /> */}
                 </div>
             </div>
         </main>

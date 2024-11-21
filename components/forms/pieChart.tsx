@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp, TrendingDown, Circle } from "lucide-react"; // Updated import for fallback
+import { TrendingUp, TrendingDown, Circle } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 import {
   Card,
@@ -26,9 +26,10 @@ interface RiskLevelData {
 
 interface PieChartProps {
   data: { riskLevel: string }[];
+  totalSurveys: number;
 }
 
-const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
+const PieChartComponent: React.FC<PieChartProps> = ({ data, totalSurveys }) => {
   const riskCounts = React.useMemo(() => {
     const counts: Record<string, number> = {
       low: 0,
@@ -47,12 +48,10 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
 
   const { low: lowCount, medium: mediumCount, high: highCount } = riskCounts;
 
-  const totalSurveys = lowCount + mediumCount + highCount;
-
   const chartData: RiskLevelData[] = [
-    { riskLevel: "Low", count: lowCount, fill: "var(--color-safari)" },
-    { riskLevel: "Medium", count: mediumCount, fill: "var(--color-firefox)" },
-    { riskLevel: "High", count: highCount, fill: "var(--color-other)" },
+    { riskLevel: "low", count: (lowCount), fill: "var(--color-safari)" },
+    { riskLevel: "medium", count: (mediumCount), fill: "var(--color-firefox)" },
+    { riskLevel: "high", count: (highCount), fill: "var(--color-other)" },
   ];
 
   // Determine the trend
@@ -110,7 +109,7 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalSurveys.toLocaleString()}
+                          {totalSurveys.toLocaleString()} 
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -133,9 +132,8 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data }) => {
           {trendText} {trendIcon}
         </div>
         <div className="leading-none text-muted-foreground text-center">
-           Showing positive, negative, and neutral sentiment relation
+          Showing positive, negative, and neutral sentiment relation
         </div>
-
       </CardFooter>
     </Card>
   );
