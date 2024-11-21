@@ -60,7 +60,7 @@ export function HorizontalBarChart({ data }: HorizontalBarChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Departments</CardTitle>
+        <CardTitle style={{textAlign:'center'}}>Departments</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -92,13 +92,14 @@ export function HorizontalBarChart({ data }: HorizontalBarChartProps) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Data Engineering up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Displaying the 5 departments with the highest risk of employee turnover.</div>
-      </CardFooter>
+      <CardFooter className="flex-col items-center justify-center text-center gap-2 text-sm">
+  <div className="flex items-center justify-center gap-2 font-medium leading-none">
+    Data Engineering up by 5.2% this month <TrendingUp className="h-4 w-4" />
+  </div>
+  <div className="flex items-center justify-center gap-2 leading-none text-muted-foreground">
+    Displaying the 5 departments with the highest risk of employee turnover.
+  </div>
+</CardFooter>
     </Card>
   )
 }

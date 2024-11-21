@@ -59,28 +59,53 @@ export function LineChartComponent({ data }: { data: { month: string, sentiment:
 
   if (currentPeriodAvg > previousPeriodAvg) {
     if (currentPeriodAvg <= lowThreshold) {
-      trendText = "This period of time is better than the last but still shows unsatisfied employees.";
+      trendText = (
+        <div className="text-center">
+          This period of time is better than the last but still shows unsatisfied employees.
+        </div>
+      );
       trendIcon = <TrendingUp className="h-4 w-4" />;
     } else if (currentPeriodAvg <= mediumThreshold) {
-      trendText = "This period of time shows improvement and is now moderately satisfied.";
+      trendText = (
+        <div className="text-center">
+          This period of time shows improvement and is now moderately satisfied.
+        </div>
+      );
       trendIcon = <TrendingUp className="h-4 w-4" />;
     } else {
-      trendText = "This period shows significant improvement with mostly satisfied employees.";
+      trendText = (
+        <div className="text-center">
+          This period shows significant improvement with mostly satisfied employees.
+        </div>
+      );
       trendIcon = <TrendingUp className="h-4 w-4" />;
     }
   } else if (currentPeriodAvg < previousPeriodAvg) {
     if (currentPeriodAvg <= lowThreshold) {
-      trendText = "This period of time is worse than the last with continued dissatisfaction.";
+      trendText = (
+        <div className="text-center">
+          This period of time is worse than the last with continued dissatisfaction.
+        </div>
+      );
       trendIcon = <TrendingDown className="h-4 w-4" />;
     } else if (currentPeriodAvg <= mediumThreshold) {
-      trendText = "This period of time shows a slight decline but is still moderately satisfied.";
+
+      trendText = (
+        <div className="text-center">
+          This period of time shows a slight decline but is still moderately satisfied.
+        </div>
+      );
       trendIcon = <TrendingDown className="h-4 w-4" />;
     } else {
-      trendText = "This period shows a decline in satisfaction from the last.";
+      trendText = (
+        <div className="text-center">
+          This period shows a decline in satisfaction from the last.
+        </div>
+      );
       trendIcon = <TrendingDown className="h-4 w-4" />;
     }
   }
-
+  
 
   const chartConfig = {
     sentiment: {
@@ -90,7 +115,7 @@ export function LineChartComponent({ data }: { data: { month: string, sentiment:
   } satisfies ChartConfig
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="items-center pb-0">
         <CardTitle>Surveys</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
