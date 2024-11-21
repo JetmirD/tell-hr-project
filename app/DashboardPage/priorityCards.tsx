@@ -1,13 +1,15 @@
+// components/forms/priorityCards.tsx
 "use client";
 import React, { useState } from "react";
 import styles from './DashboardPage.module.css';
 import { LineChartComponent } from "@/components/forms/lineChart";
-import { horizontalBarChart } from "@/components/forms/horizontalBarChart";
-import PieChartComponent from "../../components/forms/pieChart";
+// import { HorizontalBarChart } from '@/components/forms/horizontalBarChart';
+import PieChartComponent from "@/components/forms/pieChart";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faLeaf, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBill, faBriefcase, faGift, faGraduationCap, faBuilding, faClose, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'; // Include the CSS styles
+import { useDashboard } from './DashboardContext';
 
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
@@ -30,7 +32,8 @@ const filterByRiskLevel = (employees: Employee[], riskLevel: string) => {
     return employees.filter(employee => employee.riskLevel === riskLevel);
 };
 
-function MyAreaChart({ employees }: { employees: Employee[] }) {
+function MyAreaChart() {
+    const { employees, averageRiskScores, chartData, results, totalSurveys } = useDashboard();
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
     const [answerIndex, setAnswerIndex] = useState<number>(0);
@@ -81,7 +84,7 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
     };
 
     return (
-        <main style={{ gap: '1rem' }}>
+        <main style={{ gap: '1rem', marginTop: '-10%' }}>
             {/* Search input */}
             <div className={styles.searchBox}>
                 <input
@@ -180,7 +183,8 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
                         <div
                             style={{ marginTop: '40px', maxHeight: '130px', overflowY: 'auto', zIndex: 1 }}
                             className={`${styles.scrollContainer}`}
-                        >                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                        >
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                                 {mediumRiskEmployees.map((employee, index) => (
                                     <li
                                         key={employee.id}
@@ -347,19 +351,18 @@ function MyAreaChart({ employees }: { employees: Employee[] }) {
 
             {/* Charts Section */}
             <div className={styles.chartsContainer}>
-                <div className={styles.AreaChart}>
-                    {/* {LineChartComponent("Sentiment", "January - June 2024")} */}
+                <div className={styles.lineChart}>
+                    <LineChartComponent data={chartData} />
                 </div>
                 <div className={styles.AreaChart}>
-                    <PieChartComponent data={employees} />
+                    <PieChartComponent data={results} totalSurveys={totalSurveys} />
                 </div>
             </div>
-
             <div className={styles.chartsContainer}>
+
                 <div className={styles.AreaChart}>
-                    {horizontalBarChart()}
+                    {/* <HorizontalBarChart data={averageRiskScores} /> */}
                 </div>
-                
             </div>
         </main>
     );
