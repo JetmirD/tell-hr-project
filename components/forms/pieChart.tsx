@@ -116,7 +116,7 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data, totalSurveys }) => {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Surveys
+                          Responses
                         </tspan>
                       </text>
                     );
