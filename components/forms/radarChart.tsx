@@ -41,17 +41,17 @@ export function RadarChartComponent() {
   return (
     <Card>
       <CardHeader className="items-center">
-        <CardTitle>Radar Chart - Dots</CardTitle>
+        <CardTitle>Sentiments by Aspect</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
-        <ChartContainer
+      <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto"
+          style={{ width: "120%", maxWidth: "130%", height: "130%", marginLeft: "-10%" }}
         >
-          <RadarChart data={chartData}>
+          <RadarChart data={chartData} style={{width:'150% !important'}}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <PolarAngleAxis dataKey="category" />
             <PolarGrid />
@@ -69,7 +69,7 @@ export function RadarChartComponent() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending down by 0.14% this month <TrendingDown className="h-4 w-4" />
+          Overall satisfaction has decreased this quarter<TrendingDown className="h-4 w-4" />
         </div>
         <div className="flex items-center gap-2 leading-none text-muted-foreground">
           September - November 2024
