@@ -12,6 +12,7 @@ import 'react-tooltip/dist/react-tooltip.css'; // Include the CSS styles
 import { useDashboard } from './DashboardContext';
 import { RadarChartComponent } from "@/components/forms/radarChart";
 import { HorizontalBarChart } from "@/components/forms/horizontalBarChart";
+import  MapChart  from "@/components/forms/mapChart";
 const filterBySentiment = (employees: any[], sentiment: string) => {
     return employees.filter(employee => employee.sentiment === sentiment);
 }
@@ -362,6 +363,9 @@ function MyAreaChart() {
                 <div className={styles.AreaChart}>
                     <RadarChartComponent />
                 </div>
+            </div>
+            <div style={{ marginTop: '80px' }}>
+            <MapChart/>
             </div>
         </main>
     );
