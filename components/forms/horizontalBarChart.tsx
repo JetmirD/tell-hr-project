@@ -60,7 +60,7 @@ export function HorizontalBarChart({ data }: HorizontalBarChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle style={{textAlign:'center'}}>Departments</CardTitle>
+        <CardTitle style={{textAlign:'center'}}>Department Satisfaction</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

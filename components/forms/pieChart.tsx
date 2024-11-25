@@ -70,7 +70,7 @@ const PieChartComponent: React.FC<PieChartProps> = ({ data, totalSurveys }) => {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Feedback Overview</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>September - November 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

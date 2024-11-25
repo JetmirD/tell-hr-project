@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@amcharts/amcharts4-geodata": "^4.1.30",
+    "@amcharts/amcharts5": "^5.10.8",
     "@fortawesome/fontawesome-svg-core": "^6.7.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
@@ -15,6 +17,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "add": "^2.0.6",
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -26,7 +29,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-tooltip": "^5.28.0",
-    "recharts": "^2.13.3"
+    "recharts": "^2.13.3",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@types/node": "20.10.6",
