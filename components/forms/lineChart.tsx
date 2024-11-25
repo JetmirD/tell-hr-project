@@ -117,7 +117,7 @@ export function LineChartComponent({ data }: { data: { month: string, sentiment:
     <Card>
       <CardHeader className="items-center pb-0">
         <CardTitle>Sentiment Trend</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>September - November 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
