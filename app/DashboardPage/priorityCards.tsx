@@ -364,8 +364,9 @@ function MyAreaChart() {
                     <RadarChartComponent />
                 </div>
             </div>
+            <div style={{ marginTop: '80px' }}>
             <MapChart/>
-
+            </div>
         </main>
     );
 }
